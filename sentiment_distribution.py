@@ -1,8 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import os
 
-output_file = 'sentimentanalysis_output.txt'  
+output_file = 'sentimentanalysis_output.txt'
 
 if not os.path.exists(output_file):
     print(f"Error: {output_file} not found.")
@@ -15,23 +16,48 @@ with open(output_file, 'r') as f:
         if len(parts) == 2:
             sentiment, count = parts
             try:
-                data.append((sentiment, int(count)))
+                data.append((sentiment.strip(), int(count.strip())))
             except ValueError:
                 continue
 
 df = pd.DataFrame(data, columns=["Sentiment", "Count"])
 
-df.to_csv("sentiment_distribution.csv", index=False)
+def get_sentiment_label(score):
+    if score == 3:
+        return "Positive"
+    elif score == 2:
+        return "Neutral"
+    elif score == 1:
+        return "Negative"
+    else:
+        return "Unknown"
 
-print("\nSentiment Distribution:")
-print(df.to_string(index=False))
+df["Category"] = df["Count"].apply(get_sentiment_label)
 
-plt.figure(figsize=(8, 6))
-plt.bar(df["Sentiment"], df["Count"], color=["green", "blue", "red"])
+result = df.groupby("Category")["Count"].count()
+
+df.to_csv("sentiment_distribution2.csv", index=False)
+
+print("\nSentiment Distribution (Aggregated):")
+print(result.to_string())
+
+color_map = {
+    "Positive": "green",
+    "Neutral": "blue",
+    "Negative": "red"
+}
+
+plt.figure(figsize=(6, 4))
+bars = result.plot(kind="bar", color=[color_map.get(cat, "gray") for cat in result.index])
+
 plt.title("Sentiment Distribution")
-plt.ylabel("Count")
+plt.ylabel("Number of Sentences")
 plt.xlabel("Sentiment")
-plt.tight_layout()
+plt.xticks(rotation=0)
 
-plt.savefig("sentiment_distribution.png")
+legend_patches = [mpatches.Patch(color=color, label=label) for label, color in color_map.items()]
+plt.legend(handles=legend_patches, title="Sentiment Type")
+
+plt.tight_layout()
+plt.savefig("sentiment_distribution_summary.png")
 plt.show()
