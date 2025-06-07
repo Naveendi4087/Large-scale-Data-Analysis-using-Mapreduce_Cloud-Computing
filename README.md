@@ -83,5 +83,5 @@ pip3 install --user pandas matplotlib
 sentiment_distribution.csv
 
 ##### Visualization image
-sentiment_distribution.png
+sentiment_distribution_summary.png
 
