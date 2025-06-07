@@ -79,9 +79,9 @@ pip3 install --user pandas matplotlib
 
 ## 🎉 Results
 
-# Output file
+##### Output file
 sentiment_distribution.csv
 
-# Visualization image
+##### Visualization image
 sentiment_distribution.png
 
