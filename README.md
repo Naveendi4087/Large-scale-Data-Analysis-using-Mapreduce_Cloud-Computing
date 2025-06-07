@@ -39,16 +39,16 @@ This project aims to assess public opinion, emotional trends, or how individuals
 - 🧹 Run `preprocess.py` to clean the dataset:
 ```bash
 python3 preprocess.py 
-
+```
+---
 ## 🚀 Steps to Run
 
-### 📤 Upload Dataset to HDFS
-
+### 1.📤 Upload Dataset to HDFS
 ```bash
 hdfs dfs -mkdir -p /sentimentanalysis_input
 hdfs dfs -put sentimentanalysis_clean.csv /sentimentanalysis_input/
-
-### 🏃 Run MapReduce Job
+```
+### 2.🏃 Run MapReduce Job
 
 ```bash
 hadoop jar /home/hdoop/hadoop-3.4.0/share/hadoop/tools/lib/hadoop-streaming-3.4.0.jar \
@@ -57,27 +57,28 @@ hadoop jar /home/hdoop/hadoop-3.4.0/share/hadoop/tools/lib/hadoop-streaming-3.4.
   -output /sentimentanalysis_output \
   -mapper mapper.py \
   -reducer reducer.py
+```
 
-### 📥 Get Output from HDFS
+### 3.📥 Get Output from HDFS
 
 ```bash
 hdfs dfs -get /sentimentanalysis_output/part-00000 sentimentanalysis_output.txt
-
-### 📊 Visualize with Python
+```
+### 4.📊 Visualize with Python
 
 ```bash
 python3 sentiment_distribution.py
-
-### 🛠️ Setup Python Requirements (If not installed)
+```
+### 5.🛠️ Setup Python Requirements (If not installed)
 
 ```bash
 sudo apt install python3-pip
 pip3 install --user pandas matplotlib
+```
+---
 
+## 🎉 Results
 
-### 🎉 Results
-
-```bash
 # Output file
 sentiment_distribution.csv
 
